@@ -1,5 +1,6 @@
-using System;
-using System.Collections.Generic;
+
+using System.Collections;
+using UnityEditor;
 using UnityEngine;
 
 public class MaskController : MonoBehaviour
@@ -11,9 +12,10 @@ public class MaskController : MonoBehaviour
     [SerializeField] float speed=5f;
     [SerializeField] float scaleDefault;
     
-    
-    [SerializeField] bool check1=false;
-    [SerializeField] bool check2=false;
+    public int facingDir=1;
+    // [SerializeField] bool check1=false;
+    // [SerializeField] bool check2=false;
+    [SerializeField] float timeCdDisable=1f;
 
     float scaleX;
     
@@ -24,19 +26,22 @@ public class MaskController : MonoBehaviour
 
     void Start()
     {
-        cd = GetComponent<BoxCollider2D>();
+        cd = GetComponentInChildren<BoxCollider2D>();
         scaleX=transform.localScale.x;
         scaleDefault=transform.localScale.x;
+       
+        
         
     }
 
     void Update()
     {
-        if (thuHepCollider)
+        if (thuHepCollider&&facingDir==1)
         {
             ThuHepCollider();
+            
         }
-        if (moRongCollider)
+        else if (moRongCollider&&facingDir!=1)
         {
             MoRongCollider();
         }
@@ -44,16 +49,22 @@ public class MaskController : MonoBehaviour
 
     private void MoRongCollider()
     {
+         if (cd.enabled == false)
+        {
+                cd.enabled=true;
+        }
+         thuHepCollider=false;
         if (scaleX > scaleDefault)
         {
             
             
-            check2=false;
+            // check2=false;
             
             moRongCollider=false;
             scaleX=scaleDefault;
-            transform.Rotate(0,180,0);
+            Flip();
             transform.localPosition= new Vector2(-1*transform.localPosition.x,transform.localPosition.y);
+           
         }
 
         scaleX+=speed*Time.deltaTime;
@@ -66,15 +77,19 @@ public class MaskController : MonoBehaviour
 
     private void ThuHepCollider()
     {
+        moRongCollider=false;
         if (scaleX <= 0)
         {
             transform.localPosition= new Vector2(-1*transform.localPosition.x,transform.localPosition.y);
             thuHepCollider=false;
             scaleX=0;
-            transform.Rotate(0,180,0);
-            check1=false;
+            Flip();
+            // check1=false;
             // return;
-            
+            if (cd.enabled == true)
+            {
+                cd.enabled=false;
+            }
 
         }
         scaleX-=speed*Time.deltaTime;
@@ -84,24 +99,43 @@ public class MaskController : MonoBehaviour
     public void setupMaskControllerThuHep()
     {
       
-        if(!check1) 
-        {
+        // if(!check1) 
+        // {
             Debug.Log("thu hep");
-            check1=true;
+            // check1=true;
             thuHepCollider=true;
-        }
+        // }
         
     }
     public void setupMaskControllerMoRong()
     {
         
         
-        if(!check2) 
-        {
+        // if(!check2) 
+        // {
             Debug.Log("morong");
-            check2=true;
-            moRongCollider=true;
-        }
 
+            moRongCollider=true;
+        // }
+
+    }
+
+
+    void setActiveCD()
+    {
+        StartCoroutine(distableCollider(timeCdDisable));
+    }
+
+    IEnumerator distableCollider(float _time)
+    {
+        cd.enabled=false;
+        yield return new WaitForSeconds(_time);
+        cd.enabled=true;
+    }
+
+    void Flip()
+    {
+        transform.Rotate(0,180,0);
+        facingDir*=-1;
     }
 }
