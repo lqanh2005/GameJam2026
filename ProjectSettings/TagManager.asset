@@ -50,3 +50,6 @@ TagManager:
   - name: Mask3
     uniqueID: 1145083779
     locked: 0
+  - name: InvisibleDot
+    uniqueID: 825096971
+    locked: 0

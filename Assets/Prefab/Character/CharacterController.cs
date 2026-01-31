@@ -21,6 +21,11 @@ public class CharacterController : MonoBehaviour
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] Rigidbody2D rb;
 
+    [Header("checkGr")]
+    [SerializeField] Transform checkGr;
+    [SerializeField] float distance=10f;
+    [SerializeField] LayerMask Ground;
+
     const string SPEED_PARAM = "Speed";
     const string JUMP_PARAM = "Jump";
 
@@ -61,7 +66,7 @@ public class CharacterController : MonoBehaviour
         if (animator != null)
             animator.SetTrigger(JUMP_PARAM);
 
-        if (useRigidbodyForJump && rb != null)
+        if (useRigidbodyForJump && rb != null&&checkGround())
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
     }
 
@@ -73,4 +78,11 @@ public class CharacterController : MonoBehaviour
         float speed = Mathf.Abs(h) > 0.01f ? 1f : 0f;
         animator.SetFloat(SPEED_PARAM, speed);
     }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.DrawLine(checkGr.position,new Vector2(checkGr.position.x,checkGr.position.y-distance));
+    }
+
+    RaycastHit2D checkGround()=> Physics2D.Raycast(checkGr.position,Vector2.down,distance,Ground);
 }

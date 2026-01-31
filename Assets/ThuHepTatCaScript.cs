@@ -18,8 +18,8 @@ public class ThuHepTatCaScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(transform.position.x<=8.7f)
-            return;
+
+        if(idx>=listMaskController.Count-1) return;
             
         if (transform.position.x >= positions[idx])
         {

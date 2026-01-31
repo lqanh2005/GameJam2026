@@ -17,13 +17,14 @@ public class GameController : MonoBehaviour
     [Header("Timer")]
     [SerializeField] float timer=10f;
     [SerializeField] List<int>timeList;
+    [SerializeField] float startPosition=9f;
     int idxList=0;
     float positionBase=0;
     void Start()
     {
         idx=0;
         idxList=0;
-        float startPosition=-2.5f;
+        
         
         for(int i = 0; i < listStt.Count; i++)
         {

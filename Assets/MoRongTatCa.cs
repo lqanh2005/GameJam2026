@@ -20,6 +20,7 @@ public class MoRongTatCa : MonoBehaviour
     {
         // if(transform.position.x<=8.7f)
         //     return;
+        if(idx>=listMaskController.Count-1) return;
 
         if (idx<=listMaskController.Count-1&&transform.position.x >= positions[idx])
         {
