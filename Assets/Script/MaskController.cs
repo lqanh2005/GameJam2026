@@ -26,6 +26,7 @@ public class MaskController : MonoBehaviour
 
     void Start()
     {
+        speed=100f;
         cd = GetComponentInChildren<BoxCollider2D>();
         scaleX=transform.localScale.x;
         scaleDefault=transform.localScale.x;

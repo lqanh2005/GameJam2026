@@ -1,6 +1,8 @@
-using System.Collections;
+
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
@@ -18,14 +20,24 @@ public class GameController : MonoBehaviour
     [SerializeField] float timer=10f;
     [SerializeField] List<int>timeList;
     [SerializeField] float startPosition=9f;
+
+    [Header("Nhap nhay")]
+    [SerializeField] TextMeshProUGUI timeText;
+    [SerializeField] Image image;
+    [SerializeField] bool nhapnhay=false;
     int idxList=0;
     float positionBase=0;
     void Start()
     {
         idx=0;
         idxList=0;
-        
-        
+        timeText.text=timer.ToString();
+        if (timer <= 10f&&!nhapnhay)
+        {
+            nhapnhay=true;
+            InvokeRepeating("NhapNhay",0f,.2f);
+        }
+
         for(int i = 0; i < listStt.Count; i++)
         {
             GameObject tmp=Instantiate(masks[listStt[i]],
@@ -39,6 +51,10 @@ public class GameController : MonoBehaviour
     void Update()
     {
         timer-=Time.deltaTime;
+        if(timer<=0)    timer=0;
+        timeText.text=((int)timer).ToString();
+
+        
 
         if (timer < timeList[idxList])
         {
@@ -65,5 +81,18 @@ public class GameController : MonoBehaviour
 
     }
 
-    
+    void NhapNhay()
+    {
+        Color _color=timeText.color;
+        if (!_color.Equals(Color.white))
+        {
+            timeText.color=Color.white;
+            image.color=Color.white;
+        }
+        else if (!_color.Equals(Color.red))
+        {
+            timeText.color=Color.red;
+            image.color=Color.red;
+        }
+    }
 }

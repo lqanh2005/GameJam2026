@@ -53,3 +53,6 @@ TagManager:
   - name: InvisibleDot
     uniqueID: 825096971
     locked: 0
+  - name: SideBar
+    uniqueID: 2846543199
+    locked: 0
